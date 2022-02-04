@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\PageController;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,9 +16,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [PageController::class, 'posts']);
+
+
+// muestre el slug en la URL, a partir de Laravel 7 'blog/{post:slug}'
+Route::get('blog/{post:slug}', [PageController::class, 'post'])->name('post');
+
+
+
+//aqui se crean automaticamente los routes del auth de login
 
 Auth::routes();
 
