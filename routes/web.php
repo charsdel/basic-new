@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
 
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,3 +30,19 @@ Route::get('blog/{post:slug}', [PageController::class, 'post'])->name('post');
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+
+//BACK END
+//RUTAS DE ARTICULOS 
+
+
+//uso el back slash para sar acceso a toda entidad y no la ruta como tal
+//middleware para proteger
+//except para evitar el show que ya lo uso en la parte publica
+
+use App\Http\Controllers\Backend\PostController;
+Route::resource('/posts', PostController::class)
+    ->middleware('auth')
+    ->except('show');
+
