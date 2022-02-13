@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
-use Illuminate\Http\Request;
+
+use App\Http\Requests\PostRequest;
 
 class PostController extends Controller
 {
@@ -29,6 +30,7 @@ class PostController extends Controller
      */
     public function create()
     {
+        //dd('hola');
         return view('posts.create');
     }
 
@@ -38,9 +40,34 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
-        //
+        //salvar
+
+        //dd($request);
+        
+        $post = Post::create([
+            'user_id' => auth()->user()->id
+
+        ] + $request->all() );
+
+        //imagen
+
+        //si recibimos un archivo, entonces
+        if($request->hasFile('img') and $request->file('img')->isValid())
+        {
+
+            //salvamos esa imagen en la carpeta de almacenamiento y me retorne la url
+            //file y store son metodos de laravel
+            $post->img = $request->file('img')->store('posts','public');
+
+            $post->save();
+        }
+
+        
+        //retorno a la vista anterior (vista crear) y uso una variable de entorno para mandar el mensaje exito 
+        return back()->with('status', 'Creado con exito');
+        //retornar*/
     }
 
    
